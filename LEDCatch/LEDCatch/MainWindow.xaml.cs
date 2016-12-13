@@ -477,6 +477,8 @@ namespace LEDCatch
 
         private int PositieLinksRechts = 1;
         private int PositieVoorAchter;
+        private List<double> RArmPositieY;
+        private List<double> LArmPositieY;
         private void DrawBonesAndJoints(Skeleton skeleton)
         {
 
@@ -502,183 +504,199 @@ namespace LEDCatch
                         Joint righthand = skeleton.Joints[JointType.HandRight];
                         Joint lefthand = skeleton.Joints[JointType.HandLeft];
                         Joint spine = skeleton.Joints[JointType.Spine];
-                        #region voet
-                        //if (Math.Round(rightankle.Position.X, 1) >= 0.4)
-                        //{
-                        //    Console.WriteLine("RIGHT ANKLE: " + Math.Round(rightankle.Position.X, 1));
-                        //    StrekRechterBeen();
-                        //}
-                        //else if (Math.Round(leftankle.Position.X, 1) <= -0.6)
-                        //{
-                        //    Console.WriteLine("LEFT ANKLE: " + leftankle.Position.X);
-                        //    StrekLinkerBeen();
-                        //}
-                        //else
-                        //{
-                        //    RechterBeenTerug();
-                        //    LinkerBeenTerug();
-                        //}
-                        #endregion
-                        // X IS WANNEER LINKS OF RECHTS
-                        // Y IS WANNEER ONDER OF BOVEN
-                        // Z IS WANNEER ACHTER OF VOOR
-                        
-                        #region Arm
-                        if (Math.Round(righthand.Position.Y,1) > 0.4 && rechterarm == 0)
+                        if(RArmPositieY.Count ==6 && LArmPositieY.Count == 6)
                         {
-                            Console.WriteLine("HAND OMHOOG");
-                            RechterArmOp();
-                        }
+                            double rArmPosY = RArmPositieY.Average();
+                            double lArmPosY = LArmPositieY.Average();
 
-                        else if ((Math.Round(righthand.Position.Y,1) > 0 || Math.Round(righthand.Position.Y,1) < 0.3)&&(rechterarm==-1 || rechterarm==1))
-                        {
-                            Console.WriteLine("HAND INT MIDDEN");
-                            RechterArmGewoon();
-                        }
-                        else if (Math.Round(righthand.Position.Y,1) < -0.2 && rechterarm == 0)
-                        {
-                            Console.WriteLine("HAND BENEDEN");
-                            RechterArmBeneden();
-                        }
+                            #region Begin Code
+                            #region Beenstrek
+                            //if (Math.Round(rightankle.Position.X, 1) >= 0.4)
+                            //{
+                            //    Console.WriteLine("RIGHT ANKLE: " + Math.Round(rightankle.Position.X, 1));
+                            //    StrekRechterBeen();
+                            //}
+                            //else if (Math.Round(leftankle.Position.X, 1) <= -0.6)
+                            //{
+                            //    Console.WriteLine("LEFT ANKLE: " + leftankle.Position.X);
+                            //    StrekLinkerBeen();
+                            //}
+                            //else
+                            //{
+                            //    RechterBeenTerug();
+                            //    LinkerBeenTerug();
+                            //}
+                            #endregion
+                            // X IS WANNEER LINKS OF RECHTS
+                            // Y IS WANNEER ONDER OF BOVEN
+                            // Z IS WANNEER ACHTER OF VOOR
 
-                        if (Math.Round(lefthand.Position.Y,1) > 0.4 && linkerarm == 0)
-                        {
-                            LinkerArmOp();
-                        }
-                        else if ((Math.Round(lefthand.Position.Y,1) > 0|| Math.Round(lefthand.Position.Y,1) < 0.3)&&(linkerarm==-1 || linkerarm==1))
-                        {
-                   
-                            LinkerArmGewoon();
-
-                        }
-                        else if (Math.Round(lefthand.Position.Y,1) < -0.2 && linkerarm == 0)
-                        {
-                            LinkerArmBeneden();
-                        }
-
-                        #endregion
-                        // VOORUIT ACHTERUIT
-
-                        #region Vooruit Achteruit
-                        if (spine.Position.Z > 3.4)
-                        {
-                            Console.WriteLine("Lijn 8 - Hier sta ik achteraan - ");
-                            CheckPositieVoorAchter(8);
-                        }
-                        else if (spine.Position.Z > 3.2 && spine.Position.Z < 3.4)
-                        {
-                            Console.WriteLine("Lijn 7");
-                            CheckPositieVoorAchter(7);
-
-                        }
-                        else if (spine.Position.Z > 3.0 && spine.Position.Z < 3.2)
-                        {
-                            Console.WriteLine("Lijn 6");
-                            CheckPositieVoorAchter(6);
-
-                        }
-                        else if (spine.Position.Z > 2.8 && spine.Position.Z < 3.0)
-                        {
-                            Console.WriteLine("Lijn 5");
-                            CheckPositieVoorAchter(5);
-
-                        }
-                        else if (spine.Position.Z > 2.6 && spine.Position.Z < 2.8)
-                        {
-                            Console.WriteLine("Lijn 4");
-                            CheckPositieVoorAchter(4);
-
-                        }
-                        else if (spine.Position.Z > 2.4 && spine.Position.Z < 2.6)
-                        {
-                            Console.WriteLine("Lijn 3");
-                            CheckPositieVoorAchter(3);
-
-                        }
-                        else if (spine.Position.Z > 2.2 && spine.Position.Z < 2.4)
-                        {
-                            Console.WriteLine("Lijn 2");
-                            CheckPositieVoorAchter(2);
-
-                        }
-                        else if (spine.Position.Z < 2.2)
-                        {
-                            Console.WriteLine("Lijn 1 - HIER STA IK VOORAAN - ");
-                            CheckPositieVoorAchter(1);
-
-                        }
-                        #endregion
-                        //LINKS RECHT
-                        #region links recht                      
-                        if (Math.Round(spine.Position.X, 1) > -0.2 && Math.Round(spine.Position.X, 1) < 0.05)
-                        {
-                            Console.WriteLine("GE STAAT INT MIDDENLINKS");
-                            switch (PositieLinksRechts)
+                            #region Arm
+                            if (Math.Round(rArmPosY, 1) > 0.4 && rechterarm == 0)
                             {
-                                case 0:
-                                    {
-                                        GaNaarRechts();
-                                        break;
-                                    }
-                                case 2:
-                                    {
-                                        GaNaarLinks();
-                                        break;
-                                    }
+                                Console.WriteLine("HAND OMHOOG");
+                                RechterArmOp();
                             }
-                            PositieLinksRechts = 1;
-                        }
-                        else if (Math.Round(spine.Position.X, 1) > 0.05 && Math.Round(spine.Position.X, 1) <= 0.2)
-                        {
-                            Console.WriteLine("GE STAAT INT MIDDENRECHTS");
-                            switch (PositieLinksRechts)
+
+                            else if ((Math.Round(rArmPosY, 1) > 0 || Math.Round(rArmPosY, 1) < 0.3) && (rechterarm == -1 || rechterarm == 1))
                             {
-                                case 1:
-                                    {
-                                        GaNaarRechts();
-                                        break;
-                                    }
-                                case 3:
-                                    {
-                                        GaNaarLinks();
-                                        break;
-                                    }
+                                Console.WriteLine("HAND INT MIDDEN");
+                                RechterArmGewoon();
                             }
-                            PositieLinksRechts = 2;
-                        }
-                        else if (Math.Round(spine.Position.X, 1) < -0.4)
-                        {
-                            Console.WriteLine("GE STAAT LINKS");
-                            GaNaarLinks();
-                            PositieLinksRechts = 0;
-                        }
-                        else if (Math.Round(spine.Position.X, 1) > 0.4)
-                        {
-                            Console.WriteLine("GE STAAT RECHTS");
-                            GaNaarRechts();
-                            PositieLinksRechts = 3;
-                        }
-                        #endregion
-                        test = false;
-                        #region punt
-                        if (puntaan)
-                        {
-                            ventje[15] = puntje;
+                            else if (Math.Round(rArmPosY, 1) < -0.2 && rechterarm == 0)
+                            {
+                                Console.WriteLine("HAND BENEDEN");
+                                RechterArmBeneden();
+                            }
+
+                            if (Math.Round(lArmPosY, 1) > 0.4 && linkerarm == 0)
+                            {
+                                LinkerArmOp();
+                            }
+                            else if ((Math.Round(lArmPosY, 1) > 0 || Math.Round(lArmPosY, 1) < 0.3) && (linkerarm == -1 || linkerarm == 1))
+                            {
+
+                                LinkerArmGewoon();
+
+                            }
+                            else if (Math.Round(lArmPosY, 1) < -0.2 && linkerarm == 0)
+                            {
+                                LinkerArmBeneden();
+                            }
+
+                            #endregion
+                            // VOORUIT ACHTERUIT
+
+                            #region Vooruit Achteruit
+                            if (spine.Position.Z > 3.4)
+                            {
+                                Console.WriteLine("Lijn 8 - Hier sta ik achteraan - ");
+                                CheckPositieVoorAchter(8);
+                            }
+                            else if (spine.Position.Z > 3.2 && spine.Position.Z < 3.4)
+                            {
+                                Console.WriteLine("Lijn 7");
+                                CheckPositieVoorAchter(7);
+
+                            }
+                            else if (spine.Position.Z > 3.0 && spine.Position.Z < 3.2)
+                            {
+                                Console.WriteLine("Lijn 6");
+                                CheckPositieVoorAchter(6);
+
+                            }
+                            else if (spine.Position.Z > 2.8 && spine.Position.Z < 3.0)
+                            {
+                                Console.WriteLine("Lijn 5");
+                                CheckPositieVoorAchter(5);
+
+                            }
+                            else if (spine.Position.Z > 2.6 && spine.Position.Z < 2.8)
+                            {
+                                Console.WriteLine("Lijn 4");
+                                CheckPositieVoorAchter(4);
+
+                            }
+                            else if (spine.Position.Z > 2.4 && spine.Position.Z < 2.6)
+                            {
+                                Console.WriteLine("Lijn 3");
+                                CheckPositieVoorAchter(3);
+
+                            }
+                            else if (spine.Position.Z > 2.2 && spine.Position.Z < 2.4)
+                            {
+                                Console.WriteLine("Lijn 2");
+                                CheckPositieVoorAchter(2);
+
+                            }
+                            else if (spine.Position.Z < 2.2)
+                            {
+                                Console.WriteLine("Lijn 1 - HIER STA IK VOORAAN - ");
+                                CheckPositieVoorAchter(1);
+
+                            }
+                            #endregion
+                            //LINKS RECHT
+                            #region links recht                      
+                            if (Math.Round(spine.Position.X, 1) > -0.2 && Math.Round(spine.Position.X, 1) < 0.05)
+                            {
+                                Console.WriteLine("GE STAAT INT MIDDENLINKS");
+                                switch (PositieLinksRechts)
+                                {
+                                    case 0:
+                                        {
+                                            GaNaarRechts();
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+                                            GaNaarLinks();
+                                            break;
+                                        }
+                                }
+                                PositieLinksRechts = 1;
+                            }
+                            else if (Math.Round(spine.Position.X, 1) > 0.05 && Math.Round(spine.Position.X, 1) <= 0.2)
+                            {
+                                Console.WriteLine("GE STAAT INT MIDDENRECHTS");
+                                switch (PositieLinksRechts)
+                                {
+                                    case 1:
+                                        {
+                                            GaNaarRechts();
+                                            break;
+                                        }
+                                    case 3:
+                                        {
+                                            GaNaarLinks();
+                                            break;
+                                        }
+                                }
+                                PositieLinksRechts = 2;
+                            }
+                            else if (Math.Round(spine.Position.X, 1) < -0.4)
+                            {
+                                Console.WriteLine("GE STAAT LINKS");
+                                GaNaarLinks();
+                                PositieLinksRechts = 0;
+                            }
+                            else if (Math.Round(spine.Position.X, 1) > 0.4)
+                            {
+                                Console.WriteLine("GE STAAT RECHTS");
+                                GaNaarRechts();
+                                PositieLinksRechts = 3;
+                            }
+                            #endregion
+                            test = false;
+                            #region punt
+                            if (puntaan)
+                            {
+                                ventje[15] = puntje;
+                            }
+                            else
+                            {
+                                ventje[15] = 600;
+                            }
+                            MakeArray(ventje.ToList<int>());
+                            puntaan = !puntaan;
+                            List<int> v = ventje.ToList<int>();
+                            v.Remove(puntje);
+                            if (v.Contains(puntje))
+                            {
+                                score++;
+                                puntje = rand.Next(1, 3) == 1 ? rand.Next(0, 64) : rand.Next(192, 384);
+                            }
+                            #endregion
+                            #endregion
+                            RArmPositieY.Clear();
+                            LArmPositieY.Clear();
                         }
                         else
                         {
-                            ventje[15] = 600;
+                            RArmPositieY.Add(righthand.Position.Y);
+                            LArmPositieY.Add(lefthand.Position.Y);
                         }
-                        MakeArray(ventje.ToList<int>());
-                        puntaan = !puntaan;
-                        List<int> v = ventje.ToList<int>();
-                        v.Remove(puntje);
-                        if (v.Contains(puntje))
-                        {
-                            score++;
-                            puntje = rand.Next(1, 3) == 1 ? rand.Next(0, 64) : rand.Next(192, 384);
-                        }
-                        #endregion
+
                     }
 
                 }
